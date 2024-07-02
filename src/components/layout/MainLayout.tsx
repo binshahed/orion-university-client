@@ -3,24 +3,36 @@ import { Layout, Menu, MenuProps } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 
 import logo from "../../assets/images/nexorion-icon-light.png";
+import { NavLink, Outlet } from "react-router-dom";
+import { sideBarItems } from "../../routes/admin.routes";
 
 const items: MenuProps["items"] = [
   {
-    key: "1",
-    label: "Dashboard"
+    key: "Dashboard",
+    label: <NavLink to="/admin/dashboard">Dashboard</NavLink>
   },
   {
-    key: "2",
-    label: "Profile"
-  },
-  {
-    key: "3",
-    label: "Students"
+    key: "User Management",
+    label: "User Management",
+    children: [
+      {
+        key: "Create Admin",
+        label: <NavLink to="create-admin">Create Admin</NavLink>
+      },
+      {
+        key: "Create Faculty",
+        label: <NavLink to="create-faculty">Create Faculty</NavLink>
+      },
+      {
+        key: "Create Student",
+        label: <NavLink to="create-student">Create Student</NavLink>
+      }
+    ]
   }
 ];
 const MainLayout = () => {
   return (
-    <Layout style={{height: '100vh'}}>
+    <Layout style={{ height: "100vh" }}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
@@ -38,7 +50,7 @@ const MainLayout = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["4"]}
-          items={items}
+          items={sideBarItems}
         />
       </Sider>
       <Layout>
@@ -50,11 +62,11 @@ const MainLayout = () => {
               minHeight: 360
             }}
           >
-            content
+            <Outlet />
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          Copyright ©{new Date().getFullYear()} NexOrion -All Rights Reserved
         </Footer>
       </Layout>
     </Layout>
