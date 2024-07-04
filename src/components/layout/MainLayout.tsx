@@ -1,58 +1,15 @@
-import { Layout, Menu, MenuProps } from "antd";
+import { Layout } from "antd";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
-import logo from "../../assets/images/nexorion-icon-light.png";
-import { NavLink, Outlet } from "react-router-dom";
-import { sideBarItems } from "../../routes/admin.routes";
+import { Outlet } from "react-router-dom";
 
-const items: MenuProps["items"] = [
-  {
-    key: "Dashboard",
-    label: <NavLink to="/admin/dashboard">Dashboard</NavLink>
-  },
-  {
-    key: "User Management",
-    label: "User Management",
-    children: [
-      {
-        key: "Create Admin",
-        label: <NavLink to="create-admin">Create Admin</NavLink>
-      },
-      {
-        key: "Create Faculty",
-        label: <NavLink to="create-faculty">Create Faculty</NavLink>
-      },
-      {
-        key: "Create Student",
-        label: <NavLink to="create-student">Create Student</NavLink>
-      }
-    ]
-  }
-];
+import SideBar from "./SideBar";
+
 const MainLayout = () => {
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img style={{ width: "100px", padding: "20px" }} src={logo} alt="" />
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["4"]}
-          items={sideBarItems}
-        />
-      </Sider>
+      <SideBar />
       <Layout>
         <Header style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0" }}>
