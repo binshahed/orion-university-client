@@ -6,8 +6,8 @@ import FacultyDashboard from "../pages/faculty/FacultyDashboard";
 
 export const facultyPaths = [
   {
-    name: "Faculty",
-    path: "faculty",
+    name: "Dashboard",
+    path: "dashboard",
     element: <FacultyDashboard />
   },
   {
