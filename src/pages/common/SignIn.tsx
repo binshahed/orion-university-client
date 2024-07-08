@@ -28,10 +28,14 @@ const SignIn = () => {
         token: res.data.accessToken
       })
     );
+
+    console.log(res);
     toast.success("Login successful");
 
     navigate(`/${user?.data.role}/dashboard`);
   };
+
+  console.log(error);
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
@@ -80,7 +84,7 @@ const SignIn = () => {
             >
               Log in
             </Button>
-            {isError && <p className="error">{error.data.message}</p>}
+            {isError && <p className="error">{error?.data?.message}</p>}
           </Form.Item>
         </Form>
       </div>

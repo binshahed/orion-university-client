@@ -4,15 +4,18 @@ import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { adminPaths } from "../../routes/admin.routes";
 import logo from "../../assets/images/nexorion-icon-light.png";
 import { facultyPaths } from "../../routes/faculty.routes";
+import { useAppSelector } from "../../store/hooks";
 
 const SideBar = () => {
+  const user = useAppSelector((state) => state?.auth?.user?.data);
+
   const userRole = {
     ADMIN: "admin",
     FACULTY: "faculty",
     STUDENT: "student"
   };
 
-  const role = "faculty";
+  const role = user?.role;
   let sidebarItems;
 
   switch (role) {
