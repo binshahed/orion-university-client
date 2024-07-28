@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
@@ -6,7 +7,15 @@ import logo from "../../assets/images/nexorion-icon-light.png";
 import { facultyPaths } from "../../routes/faculty.routes";
 import { useAppSelector } from "../../store/hooks";
 
-const SideBar = () => {
+const SideBar = ({
+  trigger,
+  collapsible,
+  collapsed
+}: {
+  trigger: any;
+  collapsible: any;
+  collapsed: boolean;
+}) => {
   const user = useAppSelector((state) => state?.auth?.user?.data);
 
   const userRole = {
@@ -35,6 +44,10 @@ const SideBar = () => {
 
   return (
     <Sider
+      trigger={trigger}
+      collapsible={collapsible}
+      collapsed={collapsed}
+      width={300}
       breakpoint="lg"
       collapsedWidth="0"
       onBreakpoint={(broken) => {
