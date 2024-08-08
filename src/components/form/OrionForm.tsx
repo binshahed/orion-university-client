@@ -18,8 +18,21 @@ type TFormProps = {
   children: ReactNode;
 } & TFormConfig;
 
-const OrionForm = ({ onSubmit }: TFormProps) => {
+const OrionForm = ({
+  onSubmit,
+  children,
+  defaultValues,
+  resolver
+}: TFormProps) => {
   const formConfig: TFormConfig = {};
+
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
+  }
+
+  if (resolver) {
+    formConfig["resolver"] = resolver;
+  }
 
   const methods = useForm(formConfig);
 
@@ -29,7 +42,9 @@ const OrionForm = ({ onSubmit }: TFormProps) => {
   };
   return (
     <FormProvider {...methods}>
-      <Form layout="horizontal" onFinish={methods.handleSubmit(submit)}></Form>
+      <Form layout="vertical" onFinish={methods.handleSubmit(submit)}>
+        {children}
+      </Form>
     </FormProvider>
   );
 };

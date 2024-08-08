@@ -1,6 +1,6 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import type { FormProps } from "antd";
-import { Button, Flex, Form, Input } from "antd";
+import { Button, Flex, Form, Input, message } from "antd";
 import "../../styles/signIn.css";
 import { useLoginMutation } from "../../store/app/features/auth/authApi";
 import { useAppDispatch } from "../../store/hooks";
@@ -9,6 +9,7 @@ import { verifyToken } from "../../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { TUserData } from "../../types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 type FieldType = {
   id: string;
@@ -29,18 +30,24 @@ const SignIn = () => {
       })
     );
 
-    console.log(res);
+    message.success("Login successful");
+
     toast.success("Login successful");
 
     navigate(`/${user?.data.role}/dashboard`);
   };
 
-  console.log(error);
-
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const getErrorMessage = (error: FetchBaseQueryError | { error: string }) => {
+    if ("data" in error) {
+      return (error.data as { message?: string }).message ?? "Unknown error";
+    }
+    return error.error;
   };
 
   return (
@@ -84,7 +91,11 @@ const SignIn = () => {
             >
               Log in
             </Button>
-            {isError && <p className="error">{error?.data?.message}</p>}
+            {isError && (
+              <p className="error">
+                {getErrorMessage(error as FetchBaseQueryError)}
+              </p>
+            )}
           </Form.Item>
         </Form>
       </div>
