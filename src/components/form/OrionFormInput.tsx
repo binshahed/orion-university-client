@@ -1,4 +1,4 @@
-import { Form, Input, Typography } from "antd";
+import { Form, Input, Tag, Typography } from "antd";
 
 import { Controller } from "react-hook-form";
 
@@ -25,7 +25,7 @@ const OrionFormInput = ({
     <div>
       <Controller
         name={name}
-        render={({ field }) => (
+        render={({ field, formState: { errors } }) => (
           <Form.Item label={<Text style={{ fontSize: "18px" }}>{label}</Text>}>
             <Input
               {...field}
@@ -36,6 +36,11 @@ const OrionFormInput = ({
               disabled={disabled}
               placeholder={placeholder}
             />
+            {errors && (
+              <Tag bordered={false} color="error" style={{ marginTop: "5px" }}>
+                {errors.root?.message}
+              </Tag>
+            )}
           </Form.Item>
         )}
       />

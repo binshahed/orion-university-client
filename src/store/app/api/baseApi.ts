@@ -8,10 +8,12 @@ import {
 import { RootState } from "../../store";
 import { logout, setUser } from "../features/auth/authSlice";
 import { message } from "antd";
+import { TError } from "../../../types/error.Type";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
   credentials: "include",
+
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 
@@ -30,8 +32,9 @@ const BaseQueryWithRefreshToken: BaseQueryFn<
   // call api
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error?.status === 404) {
-    message.error("user not found");
+  if (result.error) {
+    console.log(result.error);
+    message.error((result?.error as TError)?.data?.message as string);
   }
 
   // if token is expired
@@ -67,5 +70,6 @@ const BaseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: BaseQueryWithRefreshToken,
+  tagTypes: ["AcademicSemester"],
   endpoints: () => ({})
 });

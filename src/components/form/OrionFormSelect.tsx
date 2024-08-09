@@ -1,4 +1,4 @@
-import { Form, Select, Typography } from "antd";
+import { Form, Select, Tag, Typography } from "antd";
 import { Controller } from "react-hook-form";
 
 const { Text } = Typography;
@@ -23,7 +23,7 @@ const OrionFormSelect = ({
   return (
     <Controller
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <Form.Item label={<Text style={{ fontSize: "18px" }}>{label}</Text>}>
           <Select
             {...field}
@@ -31,6 +31,11 @@ const OrionFormSelect = ({
             placeholder={placeHolder}
             options={options}
           />
+          {error && (
+            <Tag bordered={false} color="error" style={{ marginTop: "5px" }}>
+              {error?.message}
+            </Tag>
+          )}
         </Form.Item>
       )}
     />

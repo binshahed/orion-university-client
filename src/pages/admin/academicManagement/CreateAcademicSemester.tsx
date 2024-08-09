@@ -1,98 +1,84 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Button,
-  Col,
-  DatePicker,
-  DatePickerProps,
-  Flex,
-  Form,
-  Row,
-  Typography
-} from "antd";
+import { Button, Col, Flex, message, Row } from "antd";
 import { OrionForm, OrionFormSelect } from "../../../components/form";
 import { PageHeading } from "../../../components";
-import dayjs from "dayjs";
-
-const nameOptions = [
-  { label: "Autumn", value: "01" },
-  { label: "Summer", value: "02" },
-  { label: "Fall", value: "03" }
-];
-
-// Disable days before today and any previous months
-const disabledDate: DatePickerProps["disabledDate"] = (current) => {
-  return current && current < dayjs().startOf("day");
-};
-
-const onYear: DatePickerProps["onChange"] = (date, dateString) => {
-  console.log(date, dateString);
-};
-
-const { Text } = Typography;
+import { SEMESTER_OPTIONS } from "../../../constants/semesters";
+import { createAcademicSemesterSchema } from "../../../schema/createAcademicSemesterSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { lastFiveYears, MONTH_OPTIONS } from "../../../utils";
+import { TCreateAcademicSemester } from "../../../types/academicSemester.type";
+import { useCreateAcademicSemesterSchematicMutation } from "../../../store/app/features/academicSemester/academicSemesterApi";
+import { MONTHS } from "../../../constants/months";
 
 const CreateAcademicSemester = () => {
-  const handleSubmit = (data: any) => {
-    const name = nameOptions[Number(data.name) - 1].label;
+  const [createAcademicSemesterSchematic, { isSuccess, isLoading }] =
+    useCreateAcademicSemesterSchematicMutation();
+
+  const handleSubmit = (data: Partial<TCreateAcademicSemester>) => {
+    const name = SEMESTER_OPTIONS[Number(data.name) - 1].label;
     const code = data.name;
 
-    console.log({ name, code });
+    createAcademicSemesterSchematic({
+      name,
+      code,
+      year: data.year,
+      startMonth: MONTHS[Number(data?.startMonth) - 1],
+      endMonth: MONTHS[Number(data?.endMonth) - 1]
+    });
   };
+
+  if (isSuccess) {
+    message.success("Academic Semester created successfully");
+  }
 
   return (
     <div>
       <PageHeading>Create Academic Semester</PageHeading>
-      <OrionForm onSubmit={handleSubmit}>
+      <OrionForm
+        onSubmit={handleSubmit}
+        resolver={zodResolver(createAcademicSemesterSchema)}
+      >
         <Row gutter={24}>
           <Col md={6} lg={6} span={24}>
             <OrionFormSelect
               label="Select Name"
               name="name"
               placeHolder="Select Academic Semester Name"
-              options={nameOptions}
+              options={SEMESTER_OPTIONS}
             />
           </Col>
           <Col md={6} lg={6} span={24}>
-            <Form.Item
-              label={<Text style={{ fontSize: "18px" }}>Select Year</Text>}
-            >
-              <DatePicker
-                style={{ width: "100%" }}
-                onChange={onYear}
-                picker="year"
-                size="large"
-                disabledDate={disabledDate}
-              />
-            </Form.Item>
+            <OrionFormSelect
+              label="Select Year"
+              name="year"
+              placeHolder="Select Year"
+              options={lastFiveYears}
+            />
+          </Col>
+
+          <Col md={6} lg={6} span={24}>
+            <OrionFormSelect
+              label="Select Start Month"
+              name="startMonth"
+              placeHolder="Select Start Month"
+              options={MONTH_OPTIONS}
+            />
           </Col>
           <Col md={6} lg={6} span={24}>
-            <Form.Item
-              label={<Text style={{ fontSize: "18px" }}>Select Month</Text>}
-            >
-              <DatePicker
-                disabledDate={disabledDate}
-                style={{ width: "100%" }}
-                onChange={onYear}
-                picker="month"
-                size="large"
-              />
-            </Form.Item>
-          </Col>
-          <Col md={6} lg={6} span={24}>
-            <Form.Item
-              label={<Text style={{ fontSize: "18px" }}>Select Date</Text>}
-            >
-              <DatePicker
-                disabledDate={disabledDate}
-                style={{ width: "100%" }}
-                onChange={onYear}
-                size="large"
-                picker="month"
-              />
-            </Form.Item>
+            <OrionFormSelect
+              label="Select End Month"
+              name="endMonth"
+              placeHolder="Select End Month"
+              options={MONTH_OPTIONS}
+            />
           </Col>
         </Row>
         <Flex vertical align="flex-end">
-          <Button htmlType="submit" type="primary" size="large">
+          <Button
+            loading={isLoading}
+            htmlType="submit"
+            type="primary"
+            size="large"
+          >
             Submit
           </Button>
         </Flex>

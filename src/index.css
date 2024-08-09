@@ -9,3 +9,8 @@
   font-size: 15px;
   margin-top: 20px;
 }
+
+.ant-table-thead .ant-table-cell {
+  background-color: #001529 !important;
+  color: #d8d8d8  !important;
+}

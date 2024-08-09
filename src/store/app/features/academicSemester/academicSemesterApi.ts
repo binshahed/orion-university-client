@@ -1,3 +1,4 @@
+import { TCreateAcademicSemester } from "../../../../types/academicSemester.type";
 import { baseApi } from "../../api/baseApi";
 
 const academicSemesterApi = baseApi.injectEndpoints({
@@ -6,9 +7,21 @@ const academicSemesterApi = baseApi.injectEndpoints({
       query: () => ({
         url: "/academic-semester",
         method: "GET"
-      })
+      }),
+      providesTags: ["AcademicSemester"]
+    }),
+    createAcademicSemesterSchematic: builder.mutation({
+      query: (academicSemester: TCreateAcademicSemester) => ({
+        url: "/academic-semester",
+        method: "POST",
+        body: academicSemester
+      }),
+      invalidatesTags: ["AcademicSemester"]
     })
   })
 });
 
-export const { useGetAllAcademicSemesterQuery } = academicSemesterApi;
+export const {
+  useGetAllAcademicSemesterQuery,
+  useCreateAcademicSemesterSchematicMutation
+} = academicSemesterApi;
