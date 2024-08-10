@@ -2,22 +2,22 @@ import { Button, Col, Flex, message, Row } from "antd";
 import { OrionForm, OrionFormSelect } from "../../../components/form";
 import { PageHeading } from "../../../components";
 import { SEMESTER_OPTIONS } from "../../../constants/semesters";
-import { createAcademicSemesterSchema } from "../../../schema/createAcademicSemesterSchema";
+import { createAcademicSemesterSchema } from "../../../schema/AcademicSemesterSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { lastFiveYears, MONTH_OPTIONS } from "../../../utils";
-import { TCreateAcademicSemester } from "../../../types/academicSemester.type";
-import { useCreateAcademicSemesterSchematicMutation } from "../../../store/app/features/academicSemester/academicSemesterApi";
+import { useCreateAcademicSemesterSemesterMutation } from "../../../store/app/features/academicSemester/academicSemesterApi";
 import { MONTHS } from "../../../constants/months";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 const CreateAcademicSemester = () => {
-  const [createAcademicSemesterSchematic, { isSuccess, isLoading }] =
-    useCreateAcademicSemesterSchematicMutation();
+  const [createAcademicSemester, { isSuccess, isLoading }] =
+    useCreateAcademicSemesterSemesterMutation();
 
-  const handleSubmit = (data: Partial<TCreateAcademicSemester>) => {
+  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
     const name = SEMESTER_OPTIONS[Number(data.name) - 1].label;
     const code = data.name;
 
-    createAcademicSemesterSchematic({
+    createAcademicSemester({
       name,
       code,
       year: data.year,

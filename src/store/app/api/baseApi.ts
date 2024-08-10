@@ -8,8 +8,28 @@ import {
 import { RootState } from "../../store";
 import { logout, setUser } from "../features/auth/authSlice";
 import { message } from "antd";
-import { TError } from "../../../types/error.Type";
+import { TError, TResSuccess } from "../../../types/global.Type";
 
+// Utility function for handling success responses
+const handleSuccessResponse = (result: TResSuccess) => {
+  const successMessage = result.data?.message || "Operation successful";
+  message.success(successMessage, 3); // Show success message for 3 seconds
+};
+
+// Utility function for handling error responses
+const handleErrorResponse = (errorRes: TError) => {
+  if (errorRes?.data?.errorSources?.length > 0) {
+    errorRes.data.errorSources.forEach((error) => {
+      message.error(error.message, 5); // Show error message for 5 seconds
+    });
+  } else {
+    const errorMessage =
+      errorRes?.data?.message || "An unexpected error occurred";
+    message.error(errorMessage, 5); // Show generic error message for 5 seconds
+  }
+};
+
+// Base query setup with token management and refresh logic
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
   credentials: "include",
@@ -29,37 +49,46 @@ const BaseQueryWithRefreshToken: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  // call api
+  // Initial API call
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error) {
-    console.log(result.error);
-    message.error((result?.error as TError)?.data?.message as string);
+  console.log("result", result);
+
+  // Handle success response
+  if ((result as TResSuccess)?.data?.success) {
+    handleSuccessResponse(result as TResSuccess);
   }
 
-  // if token is expired
+  // Handle error response
+  if (result.error) {
+    handleErrorResponse(result.error as TError);
+  }
+
+  // Handle token expiration (401 Unauthorized)
   if (result.error?.status === 401) {
-    // call for refresh token
-    const res = await fetch("http://localhost:5000/api/v1/auth/refresh-token", {
-      method: "POST",
-      credentials: "include"
-    });
-    const data = await res.json();
-    // check is access token is exist
-    if (data?.data?.accessToken) {
-      // find user from redux store
-      const user = (api.getState() as RootState).auth.user;
-      // call for new access token
-      api.dispatch(
-        setUser({
-          user: user,
-          token: data.data.accessToken
-        })
+    try {
+      // Attempt to refresh the token
+      const res = await fetch(
+        "http://localhost:5000/api/v1/auth/refresh-token",
+        {
+          method: "POST",
+          credentials: "include"
+        }
       );
-      // failed api login call again
-      result = await baseQuery(args, api, extraOptions);
-    } else {
-      // if refresh token is expired, logout user
+      const data = await res.json();
+
+      // If a new access token is received, update the Redux store and retry the original request
+      if (data?.data?.accessToken) {
+        const user = (api.getState() as RootState).auth.user;
+        api.dispatch(setUser({ user, token: data.data.accessToken }));
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        // If refresh token is expired, log out the user
+        api.dispatch(logout());
+      }
+    } catch (refreshError) {
+      // Handle errors during the token refresh process
+      message.error("Session expired. Please log in again.", 5);
       api.dispatch(logout());
     }
   }
@@ -67,9 +96,15 @@ const BaseQueryWithRefreshToken: BaseQueryFn<
   return result;
 };
 
+// API slice configuration
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: BaseQueryWithRefreshToken,
-  tagTypes: ["AcademicSemester"],
+  tagTypes: [
+    "AcademicSemester",
+    "academicFaculty",
+    "AcademicDepartment",
+    "Student"
+  ],
   endpoints: () => ({})
 });

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form } from "antd";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -11,6 +11,7 @@ import {
 type TFormConfig = {
   defaultValues?: Record<string, any>;
   resolver?: any;
+  isSuccess?: boolean;
 };
 
 type TFormProps = {
@@ -22,7 +23,8 @@ const OrionForm = ({
   onSubmit,
   children,
   defaultValues,
-  resolver
+  resolver,
+  isSuccess
 }: TFormProps) => {
   const formConfig: TFormConfig = {};
 
@@ -40,6 +42,13 @@ const OrionForm = ({
     onSubmit(data);
     // methods.reset();
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      methods.reset();
+    }
+  }, [isSuccess]);
+
   return (
     <FormProvider {...methods}>
       <Form layout="vertical" onFinish={methods.handleSubmit(submit)}>

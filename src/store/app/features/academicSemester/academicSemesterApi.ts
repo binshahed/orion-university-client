@@ -10,7 +10,7 @@ const academicSemesterApi = baseApi.injectEndpoints({
       }),
       providesTags: ["AcademicSemester"]
     }),
-    createAcademicSemesterSchematic: builder.mutation({
+    createAcademicSemesterSemester: builder.mutation({
       query: (academicSemester: TCreateAcademicSemester) => ({
         url: "/academic-semester",
         method: "POST",
@@ -23,5 +23,5 @@ const academicSemesterApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllAcademicSemesterQuery,
-  useCreateAcademicSemesterSchematicMutation
+  useCreateAcademicSemesterSemesterMutation
 } = academicSemesterApi;

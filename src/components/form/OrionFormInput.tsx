@@ -1,5 +1,4 @@
 import { Form, Input, Tag, Typography } from "antd";
-
 import { Controller } from "react-hook-form";
 
 type TInputProps = {
@@ -25,8 +24,15 @@ const OrionFormInput = ({
     <div>
       <Controller
         name={name}
-        render={({ field, formState: { errors } }) => (
-          <Form.Item label={<Text style={{ fontSize: "18px" }}>{label}</Text>}>
+        render={({ field, fieldState: { error } }) => (
+          <Form.Item
+            label={
+              <Text style={{ fontSize: "18px" }}>
+                {label}
+                {required && <span style={{ color: "red" }}>*</span>}
+              </Text>
+            }
+          >
             <Input
               {...field}
               required={required}
@@ -36,9 +42,9 @@ const OrionFormInput = ({
               disabled={disabled}
               placeholder={placeholder}
             />
-            {errors && (
+            {error && (
               <Tag bordered={false} color="error" style={{ marginTop: "5px" }}>
-                {errors.root?.message}
+                {error.message}
               </Tag>
             )}
           </Form.Item>

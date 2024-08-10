@@ -56,6 +56,13 @@ const SideBar = ({
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type);
       }}
+      style={{
+        position: "sticky",
+        top: 0,
+        left: 0,
+        height: "100vh",
+        overflowY: "scroll"
+      }}
     >
       <div style={{ display: "flex", justifyContent: "center" }}>
         <img style={{ width: "100px", padding: "20px" }} src={logo} alt="" />

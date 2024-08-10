@@ -25,7 +25,7 @@ const MainLayout = () => {
   } = theme.useToken();
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout>
       <SideBar trigger={null} collapsible collapsed={collapsed} />
       <Layout>
         <Header
@@ -37,7 +37,12 @@ const MainLayout = () => {
             alignItems: "center",
             paddingRight: "30px",
             fontSize: "18px",
-            fontWeight: "bold"
+            fontWeight: "bold",
+            position: "sticky",
+            top: "0px",
+            zIndex: "100",
+            boxShadow:
+              "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
           }}
         >
           <Button

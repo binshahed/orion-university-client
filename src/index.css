@@ -1,10 +1,16 @@
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-.error{
+body {
+  --sb-track-color: #011a31;
+  --sb-thumb-color: #04325e;
+  --sb-size: 10px;
+}
+
+.error {
   color: red;
   font-size: 15px;
   margin-top: 20px;
@@ -12,5 +18,31 @@
 
 .ant-table-thead .ant-table-cell {
   background-color: #001529 !important;
-  color: #d8d8d8  !important;
+  color: #d8d8d8 !important;
+}
+
+/* Custom scrollbar for the Sider */
+.ant-layout-sider {
+  overflow: auto; /* Ensure overflow is enabled */
+}
+
+.ant-layout-sider::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.ant-layout-sider::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+.ant-layout-sider::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+  border: 2px solid #010e1a; /* Optional, for a border around the thumb */
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .ant-layout-sider {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
 }
