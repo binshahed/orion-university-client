@@ -7,12 +7,14 @@ export type TMenuItems = {
   children?: TMenuItems[];
 };
 
-export type TSidebarItem = {
-  key: string;
-  label: ReactNode;
-  path?: string;
-  children?: TSidebarItem[];
-};
+export type TSidebarItem =
+  | {
+      key: string;
+      label: ReactNode;
+      path?: string;
+      children?: TSidebarItem[];
+    }
+  | undefined;
 
 export type TRoute = {
   name: string;
