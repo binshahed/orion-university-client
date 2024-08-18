@@ -7,6 +7,7 @@ type TSelectForm = {
   label: string;
   name: string;
   placeHolder?: string;
+  loading?: boolean;
   options: {
     value: string;
     label: string;
@@ -18,7 +19,8 @@ const OrionFormSelect = ({
   label,
   name,
   placeHolder,
-  options
+  options,
+  loading
 }: TSelectForm) => {
   return (
     <Controller
@@ -26,6 +28,7 @@ const OrionFormSelect = ({
       render={({ field, fieldState: { error } }) => (
         <Form.Item label={<Text style={{ fontSize: "18px" }}>{label}</Text>}>
           <Select
+            loading={loading}
             {...field}
             size="large"
             placeholder={placeHolder}

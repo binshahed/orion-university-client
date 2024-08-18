@@ -104,7 +104,8 @@ export const baseApi = createApi({
     "AcademicSemester",
     "academicFaculty",
     "AcademicDepartment",
-    "Student"
+    "Student",
+    "SemesterRegistration"
   ],
   endpoints: () => ({})
 });

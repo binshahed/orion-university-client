@@ -12,6 +12,8 @@ import {
   CreateAcademicFaculty,
   CreateAcademicSemester
 } from "../pages/admin/academicManagement";
+import RegisteredSemester from "../pages/admin/SemesterRegistration/RegisteredSemester";
+import SemesterRegistration from "../pages/admin/SemesterRegistration/SemesterRegistration";
 import StudentData from "../pages/admin/userManagement/StudentData";
 import StudentDetail from "../pages/admin/userManagement/StudentDetail";
 
@@ -83,6 +85,35 @@ export const adminPaths = [
         path: "create-student",
         element: <CreateStudent />
       }
+    ]
+  },
+  {
+    name: "Semester Registration",
+    children: [
+      {
+        name: "Registered Semester",
+        path: "semester-registration",
+        element: <SemesterRegistration />
+      },
+      {
+        name: "Registered Semester",
+        path: "registered-semester",
+        element: <RegisteredSemester />
+      }
+      // {
+      //   name: "All Students",
+      //   path: "all-students",
+      //   element: <StudentData />
+      // },
+      // {
+      //   path: "student/:id",
+      //   element: <StudentDetail />
+      // },
+      // {
+      //   name: "Create Student",
+      //   path: "create-student",
+      //   element: <CreateStudent />
+      // }
     ]
   }
 ];

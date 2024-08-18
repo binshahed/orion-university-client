@@ -30,6 +30,13 @@ const studentApi = baseApi.injectEndpoints({
         method: "GET"
       }),
       providesTags: ["Student"]
+    }),
+    deleteStudent: builder.mutation({
+      query: (studentApiId) => ({
+        url: `/students/${studentApiId}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["Student"]
     })
   })
 });
@@ -37,5 +44,6 @@ const studentApi = baseApi.injectEndpoints({
 export const {
   useCreateStudentMutation,
   useGetAllStudentQuery,
-  useGetStudentDetailsQuery
+  useGetStudentDetailsQuery,
+  useDeleteStudentMutation
 } = studentApi;
