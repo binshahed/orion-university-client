@@ -91,13 +91,13 @@ export const adminPaths = [
     name: "Semester Registration",
     children: [
       {
-        name: "Registered Semester",
+        name: "Semester Registration",
         path: "semester-registration",
         element: <SemesterRegistration />
       },
       {
-        name: "Registered Semester",
-        path: "registered-semester",
+        name: "Registered Semesters",
+        path: "registered-semesters",
         element: <RegisteredSemester />
       }
       // {
