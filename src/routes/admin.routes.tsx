@@ -12,6 +12,8 @@ import {
   CreateAcademicFaculty,
   CreateAcademicSemester
 } from "../pages/admin/academicManagement";
+import CourseData from "../pages/admin/courseManagement/CourseData";
+import CreateCourse from "../pages/admin/courseManagement/CreateCourse";
 import RegisteredSemester from "../pages/admin/SemesterRegistration/RegisteredSemester";
 import SemesterRegistration from "../pages/admin/SemesterRegistration/SemesterRegistration";
 import StudentData from "../pages/admin/userManagement/StudentData";
@@ -114,6 +116,21 @@ export const adminPaths = [
       //   path: "create-student",
       //   element: <CreateStudent />
       // }
+    ]
+  },
+  {
+    name: "Course Management",
+    children: [
+      {
+        name: "Create Course",
+        path: "create-course",
+        element: <CreateCourse />
+      },
+      {
+        name: "Course Details",
+        path: "course-details",
+        element: <CourseData />
+      }
     ]
   }
 ];
